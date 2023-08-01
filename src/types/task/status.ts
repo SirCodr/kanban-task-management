@@ -1,4 +1,5 @@
 export type TaskStatus = {
   id: number,
-  title: string
+  title: string,
+  hexColor?: `#${string}`
 }

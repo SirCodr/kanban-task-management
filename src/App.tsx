@@ -1,16 +1,11 @@
-import { useState } from 'react'
-import './App.css'
-import Navbar from './components/navbar'
 import Tasks from './views/tasks'
+import AppLayout from './layout'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className='w-full h-screen'>
-      <Navbar />
+    <AppLayout >
       <Tasks />
-    </div>
+    </AppLayout>
   )
 }
 

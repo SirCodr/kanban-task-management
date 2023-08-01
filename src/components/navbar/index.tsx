@@ -8,13 +8,13 @@ const Navbar = () => {
   const [createTaskVisible, setCreateTaskVisible] = useState(false)
 
   return (
-    <nav className='flex justify-around'>
-      <span>{consts.APP_NAME}</span>
+    <nav className='flex items-center justify-between px-3 bg-white dark:bg-dark-gray'>
+      <h3 className='text-black dark:text-white'>{consts.APP_NAME}</h3>
       <Button
         label='Add New Task'
         icon='pi pi-plus'
         size='small'
-        className='text-xs'
+        className='text-xs h-8'
         onClick={() => setCreateTaskVisible(true)}
       />
       <Dialog

@@ -21,15 +21,18 @@ const initialState: AppState = {
   taskStates: [
     {
       id: 1,
-      title: 'Todo'
+      title: 'Todo',
+      hexColor: '#3498DB'
     },
     {
       id: 2,
-      title: 'Doing'
+      title: 'Doing',
+      hexColor: '#A569BD'
     },
     {
       id: 3,
-      title: 'Done'
+      title: 'Done',
+      hexColor: '#82E0AA'
     }
   ]
 }

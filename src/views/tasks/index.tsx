@@ -1,6 +1,5 @@
 import Task from '../../components/task'
 import { useAppSelector } from '../../hooks/useApp'
-import { Task as TaskType } from '../../types/task'
 
 const Tasks = () => {
   const { tasks, taskStates } = useAppSelector((state) => state.app)
@@ -10,18 +9,15 @@ const Tasks = () => {
       {taskStates.map((taskState) => {
         const tasksFiltered = tasks.filter((task) => task.statusId === taskState.id)
 
-        if (!tasksFiltered || !tasksFiltered.length) return <></>
-
         return (
-          <div key={taskState.id} className='flex flex-col gap-y-2'>
-            {taskState.title}
-            <ul className='flex flex-col gapy-2'>
-              {tasksFiltered.map((task) => (
-                <li key={task.id}>
-                  <strong>{task.title}</strong>
-                  <p>subtasks</p>
-                </li>
-              ))}
+          <div key={taskState.id} className='flex flex-col gap-y-2 flex-1'>
+            <div className='flex items-center gap-x-2 text-strong-gray'>
+              <div className={`w-4 h-4 rounded-full`} style={{ backgroundColor: taskState.hexColor}} ></div>
+              <span>{taskState.title}</span>
+              <span>({tasksFiltered.length})</span>
+            </div>
+            <ul className='flex flex-col gap-y-2 text-left'>
+              {tasksFiltered.map((task) => <Task key={task.id} task={task} />)}
             </ul>
           </div>
         )
