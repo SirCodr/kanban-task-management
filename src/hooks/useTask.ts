@@ -4,11 +4,12 @@ import { Task } from "../types/task"
 import { appActions } from "../store/app/slice"
 
 const useTask = () => {
+  const initialSubtaskState = () => ({ id: crypto.randomUUID(), title: '', completed: false })
   const initialTaskState : Task = {
     id: null,
     title: '',
     description: '',
-    subtasks: [{ id: '', title: ''}],
+    subtasks: [initialSubtaskState()],
     statusId: null
   }
   const [taskData, setTaskData] = useState(initialTaskState)
@@ -17,10 +18,7 @@ const useTask = () => {
 
   const addSubtask = () => {
     const taskDraft = {...taskData}
-    taskData.subtasks.push({
-      id: crypto.randomUUID(),
-      title: ''
-    })
+    taskData.subtasks.push(initialSubtaskState())
 
     setTaskData(taskDraft)
   }
@@ -41,11 +39,11 @@ const useTask = () => {
     setTaskData(prevTask => ({...prevTask, statusId}))
   }
 
-  const createTask = (e: FormEvent) => {
-    e.preventDefault()
-    const dataForm = Object.fromEntries(new FormData(e.target))
+  const createTask = (data: any) => {
+    const dataDraft = {...data}
     let subtasks = []
-    for (const [key, value] of Object.entries(dataForm)) {
+    for (const key in dataDraft) {
+      const value = dataDraft[key]
       if (key.toString().startsWith('subtask-')) {
         if (value) {
           subtasks.push({
@@ -54,19 +52,19 @@ const useTask = () => {
           completed: false
         })
         }
-        delete dataForm[key]
+        delete dataDraft[key]
       }
     }
-    dataForm.subtasks = subtasks
+    dataDraft.subtasks = subtasks
 
-    const task = {...dataForm, id: crypto.randomUUID(), statusId: Number(dataForm.statusId)}
+    const task = {...dataDraft, id: crypto.randomUUID(), statusId: Number(dataDraft.statusId)}
     
     setTaskData(task)
     dispatch(appActions.addTask(task))
   }
 
   return (
-    { taskData,addSubtask, removeSubtask, handleStatusChange, createTask }
+    { taskData, addSubtask, removeSubtask, handleStatusChange, createTask }
   )
 }
 
