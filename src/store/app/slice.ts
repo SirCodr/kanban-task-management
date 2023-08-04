@@ -14,7 +14,11 @@ const initialState: AppState = {
       id: 1,
       title: 'Build UI',
       description: 'New UI building',
-      subtasks: [],
+      subtasks: [{
+        id: crypto.randomUUID(),
+        title: 'First task',
+        completed: false
+      }],
       statusId: 1
     }
   ],

@@ -50,7 +50,8 @@ const useTask = () => {
         if (value) {
           subtasks.push({
           id: crypto.randomUUID(),
-          title: value
+          title: value,
+          completed: false
         })
         }
         delete dataForm[key]

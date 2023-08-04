@@ -1,4 +1,5 @@
 export type Subtask = {
   id: string,
-  title: string
+  title: string,
+  completed: boolean
 }
