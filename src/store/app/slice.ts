@@ -2,26 +2,17 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Task } from '../../types/task'
 import { TaskStatus } from '../../types/task/status'
+import { getLocalStorageItem } from '../../utils/localStorage'
 
+type TaskSelected = number | null
 export interface AppState {
   tasks: Task[]
-  taskStates: TaskStatus[]
+  taskStates: TaskStatus[],
+  taskIdSelected: TaskSelected
 }
 
 const initialState: AppState = {
-  tasks: [
-    {
-      id: 1,
-      title: 'Build UI',
-      description: 'New UI building',
-      subtasks: [{
-        id: crypto.randomUUID(),
-        title: 'First task',
-        completed: false
-      }],
-      statusId: 1
-    }
-  ],
+  tasks: getLocalStorageItem('tasks', { isObject: true }) || [],
   taskStates: [
     {
       id: 1,
@@ -38,7 +29,8 @@ const initialState: AppState = {
       title: 'Done',
       hexColor: '#82E0AA'
     }
-  ]
+  ],
+  taskIdSelected: null
 }
 
 export const appSlice = createSlice({
@@ -47,6 +39,9 @@ export const appSlice = createSlice({
   reducers: {
     addTask: (state, action: PayloadAction<Task>) => {
       state.tasks.push(action.payload)
+    },
+    setTaskIdSelected: (state, action: PayloadAction<TaskSelected>) => {
+      state.taskIdSelected = action.payload
     }
   }
 })

@@ -2,6 +2,8 @@ import { FormEvent, useState } from "react"
 import { useAppDispatch } from "./useApp"
 import { Task } from "../types/task"
 import { appActions } from "../store/app/slice"
+import { fetchTaskById } from "../services/tasks"
+import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorage"
 
 const useTask = () => {
   const initialSubtaskState = () => ({ id: crypto.randomUUID(), title: '', completed: false })
@@ -61,10 +63,21 @@ const useTask = () => {
     
     setTaskData(task)
     dispatch(appActions.addTask(task))
+
+    const tasksFromStorage = getLocalStorageItem("tasks", { isObject: true })
+    const tasksParsed = tasksFromStorage ? JSON.parse(tasksFromStorage) : []
+    tasksParsed.push(task)
+    setLocalStorageItem('tasks', tasksParsed, { isObject: true })
+  }
+
+  const getTaskById = async(id: number) => {
+    const taskFound = await fetchTaskById(id)
+
+    if (taskFound) setTaskData(taskFound)
   }
 
   return (
-    { taskData, addSubtask, removeSubtask, handleStatusChange, createTask }
+    { taskData,addSubtask, removeSubtask, handleStatusChange, createTask, getTaskById }
   )
 }
 

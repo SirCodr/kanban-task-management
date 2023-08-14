@@ -12,7 +12,7 @@ interface FormInputs extends Task {
   'subtask-1': string
 }
 
-const CreateTask = () => {
+const CreateTask =  () => {  
   const { taskStates } = useAppSelector((state) => state.app)
   const { control, register, handleSubmit, formState: { errors,  } } = useForm<FormInputs>()
   const { taskData, addSubtask, removeSubtask, createTask } = useTask()
