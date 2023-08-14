@@ -1,17 +1,17 @@
-import { useAppDispatch } from '../../hooks/useApp'
-import { appActions } from '../../store/app/slice'
-import { Task as TaskType } from '../../types/task'
+import { useNavigate } from 'react-router-dom'
+import { type Task as TaskType } from '../../types/task'
+import { APP_ROUTES } from '../../consts/routes'
 
-type Props = {
+interface Props {
   task: TaskType
 }
 
-const Task = ({ task }: Props) => {
+const Task = ({ task }: Props): JSX.Element => {
   const completedSubtasks = task.subtasks.filter(subtask => subtask.completed)
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const handleModalOpening = () => {
-    dispatch(appActions.setTaskIdSelected(task.id))
+  const handleModalOpening = (): void => {
+    navigate(`${APP_ROUTES.EDIT_TASK}/123`)
   }
 
   return (

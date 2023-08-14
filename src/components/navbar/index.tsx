@@ -1,25 +1,10 @@
-import { Dialog } from 'primereact/dialog'
 import { consts } from '../../consts'
 import { Button } from 'primereact/button'
-import CreateTask from '../task/Create'
-import { useState } from 'react'
-import { useAppSelector } from '../../hooks/useApp'
-import { useDispatch } from 'react-redux'
-import { appActions } from '../../store/app/slice'
-import EditTask from '../task/Edit'
+import { useNavigate } from 'react-router-dom'
+import { APP_ROUTES } from '../../consts/routes'
 
-const Navbar = () => {
-  const [createTaskVisible, setCreateTaskVisible] = useState(false)
-  const { taskIdSelected } = useAppSelector(state => state.app)
-  const dispatch = useDispatch()
-
-  const handleModalClosing = () => {
-    if (taskIdSelected) {
-      dispatch(appActions.setTaskIdSelected(null))
-    } else {
-      setCreateTaskVisible(false)
-    }
-  }
+const Navbar = (): JSX.Element => {
+  const navigate = useNavigate()
 
   return (
     <nav className='flex items-center justify-between px-3 bg-white dark:bg-dark-gray'>
@@ -29,17 +14,10 @@ const Navbar = () => {
         icon='pi pi-plus'
         size='small'
         className='text-xs h-8'
-        onClick={() => setCreateTaskVisible(true)}
+        onClick={() => {
+          navigate(APP_ROUTES.CREATE_TASK)
+        }}
       />
-      <Dialog
-        header={!taskIdSelected && 'Add New Task'}
-        visible={createTaskVisible || Boolean(taskIdSelected)}
-        onHide={handleModalClosing}
-        className='w-96'
-        draggable={false}
-      >
-        {taskIdSelected ? <EditTask id={taskIdSelected} /> : <CreateTask />}
-      </Dialog>
     </nav>
   )
 }

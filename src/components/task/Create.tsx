@@ -5,28 +5,35 @@ import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import { useAppSelector } from '../../hooks/useApp'
 import useTask from '../../hooks/useTask'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { Task } from '../../types/task'
+import { useForm, type SubmitHandler, Controller } from 'react-hook-form'
+import { type Task } from '../../types/task'
+import { useRef } from 'react'
 
 interface FormInputs extends Task {
   'subtask-1': string
 }
 
-const CreateTask =  () => {  
+const CreateTask = (): JSX.Element => {
+  const formRef = useRef()
   const { taskStates } = useAppSelector((state) => state.app)
-  const { control, register, handleSubmit, formState: { errors,  } } = useForm<FormInputs>()
-  const { taskData, addSubtask, removeSubtask, createTask } = useTask()
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormInputs>()
+  const { taskData, addSubtask, removeSubtask, createTask } = useTask({ formElement: formRef.current })
 
-  const onSubmit: SubmitHandler<FormInputs> = data => createTask(data)
+  const onSubmit: SubmitHandler<FormInputs> = (data) => { createTask(data) }
 
   return (
-    <form className='flex flex-col gap-y-4' onSubmit={handleSubmit(onSubmit)}>
+    <form className='flex flex-col gap-y-4' onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <InputVGroup title='Title'>
         <InputText
           placeholder='e.g Take Coffe break'
           {...register('title', { required: true })}
         />
-        {errors.title && <span>This field is required</span>}
+        {(errors.title != null) && <span>This field is required</span>}
       </InputVGroup>
       <InputVGroup title='Description'>
         <InputTextarea
@@ -37,14 +44,12 @@ const CreateTask =  () => {
       <InputVGroup title='Subtasks'>
         {taskData.subtasks.map((subtask, index) => (
           <Controller
+            key={subtask.id}
             name={`subtask-${index + 1}`}
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field }) => (
-              <section
-                className='flex flex-col gap-y-2'
-                key={subtask.id}
-              >
+              <section className='flex flex-col gap-y-2'>
                 <div className='flex gap-x-2'>
                   <InputText className='flex-1' />
                   <Button
@@ -87,11 +92,11 @@ const CreateTask =  () => {
               optionLabel='title'
               optionValue='id'
               placeholder='Select One'
-              onChange={(e) => field.onChange(e.value)}
+              onChange={(e) => { field.onChange(e.value) }}
             />
           )}
         />
-        {errors['statusId'] && <span>This field is required</span>}
+        {(errors.statusId != null) && <span>This field is required</span>}
       </InputVGroup>
       <Button label='Create Task' type='submit' />
     </form>

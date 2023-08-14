@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { Task } from '../../types/task'
-import { TaskStatus } from '../../types/task/status'
+import { type Task } from '../../types/task'
+import { type TaskStatus } from '../../types/task/status'
 import { getLocalStorageItem } from '../../utils/localStorage'
 
 type TaskSelected = number | null
 export interface AppState {
   tasks: Task[]
-  taskStates: TaskStatus[],
+  taskStates: TaskStatus[]
   taskIdSelected: TaskSelected
 }
 

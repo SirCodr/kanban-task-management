@@ -1,4 +1,4 @@
-import { LocalStorageItem } from '../types/localStorage'
+import { type LocalStorageItem } from '../types/localStorage'
 
 export const setLocalStorageItem = (
   item: LocalStorageItem,
@@ -14,7 +14,7 @@ export const setLocalStorageItem = (
     itemValue = JSON.stringify(value)
   }
 
-  window.sessionStorage.setItem(item, itemValue)
+  window.localStorage.setItem(item, itemValue)
 }
 
 export const getLocalStorageItem = (
@@ -25,7 +25,7 @@ export const getLocalStorageItem = (
   }
 ): any => {
   const { isNumber, isObject } = config ?? {}
-  const itemFound: string | null = window.sessionStorage.getItem(item)
+  const itemFound: string | null = window.localStorage.getItem(item)
 
   if (!itemFound) return null
 
@@ -40,6 +40,6 @@ export const getLocalStorageItem = (
   return itemFound
 }
 
-export const clearLocalStorageItem = (item: LocalStorageItem) => {
-  window.sessionStorage.removeItem(item)
+export const clearLocalStorageItem = (item: LocalStorageItem): void => {
+  window.localStorage.removeItem(item)
 }
