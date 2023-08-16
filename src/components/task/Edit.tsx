@@ -21,7 +21,7 @@ const EditTask = ({ task, taskStates }: Props) => {
         {task.subtasks.map((subtask, index) => (
           <div key={subtask?.id || index} className='flex gap-x-2'>
             <Checkbox checked />
-            <label>{task.subtasks[index].title}</label>
+            <label>{subtask.title}</label>
           </div>
         ))}
       </InputVGroup>

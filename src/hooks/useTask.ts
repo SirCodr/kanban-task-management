@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useAppDispatch } from './useApp'
 import { type Task } from '../types/task'
 import { appActions } from '../store/app/slice'
@@ -54,7 +54,7 @@ const useTask = (props : Props) => {
     setTaskData((prevTask) => ({ ...prevTask, statusId }))
   }
 
-  const createTask = (data: any): void => {
+  const createTask = (data: any): void => {    
     const dataDraft = { ...data }
     const subtasks = []
     for (const key in dataDraft) {
@@ -89,6 +89,17 @@ const useTask = (props : Props) => {
     if (formElement) formElement.reset()
   }
 
+  const handleTaskCreation = (e: FormEvent) => {
+    e.preventDefault()
+    
+    if (formElement) {
+      const data = new FormData(formElement)
+      console.log(data);
+      
+    }
+    
+  }
+
   const getTaskById = async (id: number): Promise<void> => {
     const taskFound = await fetchTaskById(id)
 
@@ -101,6 +112,7 @@ const useTask = (props : Props) => {
     removeSubtask,
     handleStatusChange,
     createTask,
+    handleTaskCreation,
     getTaskById
   }
 }
