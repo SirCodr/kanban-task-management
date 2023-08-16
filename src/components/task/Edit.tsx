@@ -20,7 +20,7 @@ const EditTask = ({ task, taskStates }: Props) => {
       <InputVGroup title='Subtasks'>
         {task.subtasks.map((subtask, index) => (
           <div key={subtask?.id || index} className='flex gap-x-2'>
-            <Checkbox checked />
+            <Checkbox checked={subtask.completed} />
             <label>{subtask.title}</label>
           </div>
         ))}

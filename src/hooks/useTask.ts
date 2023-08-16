@@ -10,7 +10,7 @@ type Props = {
   formElement?: HTMLFormElement | null
 }
 
-const useTask = (props : Props) => {
+const useTask = (props: Props) => {
   const { formElement } = props ?? {}
 
   const initialSubtaskState = (): Subtask => ({
@@ -54,30 +54,7 @@ const useTask = (props : Props) => {
     setTaskData((prevTask) => ({ ...prevTask, statusId }))
   }
 
-  const createTask = (data: any): void => {    
-    const dataDraft = { ...data }
-    const subtasks = []
-    for (const key in dataDraft) {
-      const value: string = dataDraft[key]
-      if (key.toString().startsWith('subtask-')) {
-        if (value !== '') {
-          subtasks.push({
-            id: crypto.randomUUID(),
-            title: value,
-            completed: false
-          })
-        }
-        delete dataDraft[key]
-      }
-    }
-    dataDraft.subtasks = subtasks
-
-    const task = {
-      ...dataDraft,
-      id: crypto.randomUUID(),
-      statusId: Number(dataDraft.statusId)
-    }
-
+  const createTask = (task: Task): void => {
     setTaskData(task)
     dispatch(appActions.addTask(task))
 
@@ -91,13 +68,33 @@ const useTask = (props : Props) => {
 
   const handleTaskCreation = (e: FormEvent) => {
     e.preventDefault()
-    
+
     if (formElement) {
-      const data = new FormData(formElement)
-      console.log(data);
-      
+      const entriesFromForm = Object.fromEntries(new FormData(formElement))
+      const dataDraft = { ...entriesFromForm }
+      const subtasks = []
+      for (const key in dataDraft) {
+        const value: string = dataDraft[key]
+        if (key.toString().startsWith('subtask-')) {
+          if (value !== '') {
+            subtasks.push({
+              id: crypto.randomUUID(),
+              title: value,
+              completed: false
+            })
+          }
+          delete dataDraft[key]
+        }
+      }
+      dataDraft.subtasks = subtasks
+
+      const task = {
+        ...dataDraft,
+        id: crypto.randomUUID(),
+        statusId: Number(dataDraft.statusId)
+      }
+      createTask(task)
     }
-    
   }
 
   const getTaskById = async (id: number): Promise<void> => {

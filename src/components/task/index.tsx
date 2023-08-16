@@ -11,7 +11,7 @@ const Task = ({ task }: Props): JSX.Element => {
   const navigate = useNavigate()
 
   const handleModalOpening = (): void => {
-    navigate(`${APP_ROUTES.EDIT_TASK}/123`)
+    navigate(`${APP_ROUTES.EDIT_TASK}/${task.id ?? ''}`)
   }
 
   return (

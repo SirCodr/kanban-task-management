@@ -5,9 +5,10 @@ import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import { useAppSelector } from '../../hooks/useApp'
 import useTask from '../../hooks/useTask'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 const CreateTask = (): JSX.Element => {
+  const [statusSelected, selectStatus] = useState(null)
   const formRef = useRef()
   const { taskStates } = useAppSelector((state) => state.app)
   const { taskData, addSubtask, removeSubtask, handleTaskCreation } = useTask({
@@ -17,16 +18,16 @@ const CreateTask = (): JSX.Element => {
   return (
     <form className='flex flex-col gap-y-4' ref={formRef} onSubmit={handleTaskCreation}>
       <InputVGroup title='Title'>
-        <InputText placeholder='e.g Take Coffe break' />
+        <InputText name='title' placeholder='e.g Take Coffe break' />
       </InputVGroup>
       <InputVGroup title='Description'>
-        <InputTextarea placeholder="It's always good to take break." />
+        <InputTextarea name='description' placeholder="It's always good to take break." />
       </InputVGroup>
       <InputVGroup title='Subtasks'>
         {taskData.subtasks.map((subtask, index) => (
           <section className='flex flex-col gap-y-2' key={index}>
             <div className='flex gap-x-2'>
-              <InputText className='flex-1' />
+              <InputText name={`subtask-${index + 1}`} className='flex-1' />
               <Button
                 icon='pi pi-times'
                 text
@@ -51,10 +52,13 @@ const CreateTask = (): JSX.Element => {
       </InputVGroup>
       <InputVGroup title='Status'>
         <Dropdown
+          value={statusSelected}
           options={taskStates}
           optionLabel='title'
           optionValue='id'
+          name='statusId'
           placeholder='Select One'
+          onChange={(e) => selectStatus(e.value)}
         />
       </InputVGroup>
       <Button label='Create Task' type='submit' />
