@@ -1,1 +1,1 @@
-export type LocalStorageItem = 'tasks'
+export type LocalStorageItem = 'tasks' | 'color-theme'

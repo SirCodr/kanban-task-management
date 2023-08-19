@@ -3,7 +3,7 @@ import { type LocalStorageItem } from '../types/localStorage'
 export const setLocalStorageItem = (
   item: LocalStorageItem,
   value: any,
-  config: {
+  config?: {
     isObject?: boolean
   }
 ) => {
@@ -19,7 +19,7 @@ export const setLocalStorageItem = (
 
 export const getLocalStorageItem = (
   item: LocalStorageItem,
-  config: {
+  config?: {
     isNumber?: boolean
     isObject?: boolean
   }
